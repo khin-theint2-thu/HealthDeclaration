@@ -1,0 +1,55 @@
+﻿@model IEnumerable<CovidHealthDeclarationForm.Models.HealthDeclarationData>
+
+<div class="container">
+    <div class="panel panel-default mt-2">
+        <div class="panel-header">
+            <a href="/HealthDeclarationForm">
+                <img src="~/img/nace-town-halls-covid-19.png" width="260" height="70" href />
+            </a>
+            <span class="main-header-title">HEALTH DECLARATION</span>
+        </div>
+        <table class="table mt-2" id="hdecldata_table">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var hdecl in Model)
+                {
+
+                    <tr data-url="Detail?visitorid=@hdecl.VisitorID">
+                        <td>@hdecl.FirstName</td>
+                        <td>@hdecl.LastName</td>
+                        <td>@hdecl.Email</td>
+                        <td>@hdecl.Phone</td>
+                        <td>
+                            @hdecl.BuildingName
+                            @string.Concat(string.IsNullOrEmpty(hdecl.BuildingLevel) ? "" : "-" + hdecl.BuildingLevel)
+                            @string.Concat(string.IsNullOrEmpty(hdecl.StreetName) ? "" : "-" + hdecl.StreetName)
+                            @string.Concat(string.IsNullOrEmpty(hdecl.RoomNumber) ? "" : "-" + hdecl.RoomNumber)
+                            @string.Concat(string.IsNullOrEmpty(hdecl.Carpark) ? "" : "-" + hdecl.Carpark)
+                            @string.Concat(string.IsNullOrEmpty(hdecl.Lobby) ? "" : "-" + hdecl.Lobby)
+                            @string.Concat(string.IsNullOrEmpty(hdecl.Pantry) ? "" : "-" + hdecl.Pantry)
+                            @string.Concat(string.IsNullOrEmpty(hdecl.PostalCode) ? "" : "-" + hdecl.PostalCode)
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $('#hdecldata_table tbody').on('click', 'tr', function () {
+        var url = $(this).data('url');
+        window.location.href = url;
+    });
+
+    $('#hdecldata_table').DataTable({});
+</script>

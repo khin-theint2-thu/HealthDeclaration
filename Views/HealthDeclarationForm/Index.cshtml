@@ -1,0 +1,276 @@
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@model CovidHealthDeclarationForm.Models.HealthDeclarationData
+
+<style>
+    .form-entry {
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        padding: 20px;
+        width: 60%; /* Adjust the width as needed */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-title {
+        display: flex;
+    }
+
+    .bg-color {
+        background: #8fd00f;
+        color: #fff;
+    }
+
+    .font-color {
+        color: #8fd00f;
+    }
+
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgb(201 191 191 / 25%);
+        border-color: transparent;
+    }
+
+    .text-danger {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    input[type="radio"] {
+        /* remove standard background appearance */
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        /* create custom radiobutton appearance */
+        display: inline-block;
+        width: 17px;
+        height: 17px;
+        padding: 1px;
+        /* background-color only for content */
+        background-clip: content-box;
+        border: 2px solid #bbbbbb;
+        background-color: #e7e6e7;
+        border-radius: 50%;
+    }
+
+        /* appearance for checked radiobutton */
+        input[type="radio"]:checked {
+            background-color: #7e6bcb;
+        }
+
+    /* optional styles, I'm using this for centering radiobuttons */
+    .flex {
+        display: flex;
+        align-items: center;
+    }
+
+    .panel {
+        background: #fafafa;
+        padding: 20px;
+    }
+</style>
+
+<div class="panel">
+    <div class="form-entry">
+
+        <div class="form-title">
+            <img src="~/img/nace-town-halls-covid-19.png" width="250" height="65" />
+            <span class="main-header-title title-align-right">HEALTH DECLARATION</span>
+            @if (@ViewBag.IsAuthorized)
+            {
+                <a href="@Url.Action("ViewList", "HealthDeclarationForm")">
+                    <img src="~/img/View.png" width="47" height="47" style="margin-left:50px;margin-top:15px;" />
+                </a>
+            }
+        </div>
+        <form asp-action="Index" class="mt-3 mb-3 mr-2 ml-2">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="VisitorID" />
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="font-label"><span style="color:red">*</span>First Name</label>
+                    <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label class="font-label"><span style="color:red">*</span>Last Name</label>
+                    <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="font-label"><span style="color:red">*</span>Phone</label>
+                    <input asp-for="Phone" class="form-control" placeholder="Phone" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="col-sm-6">
+                    <label class="font-label">Email</label>
+                    <input asp-for="Email" class="form-control" placeholder="Email" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label class="font-label">Building</label>
+                    <input asp-for="BuildingName" class="form-control" placeholder="Building" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="font-label">Level</label>
+                    <input asp-for="BuildingLevel" class="form-control" placeholder="Level" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="font-label">Street</label>
+                    <input asp-for="StreetName" class="form-control" placeholder="Street" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="font-label">Room</label>
+                    <input asp-for="RoomNumber" class="form-control" placeholder="Room" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <label class="font-label">Car Park</label>
+                    <input asp-for="Carpark" class="form-control" placeholder="Carpark" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="font-label">Lobby</label>
+                    <input asp-for="Lobby" class="form-control" placeholder="Lobby" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="font-label">Pantry</label>
+                    <input asp-for="Pantry" class="form-control" placeholder="Pantry" />
+                </div>
+                <div class="col-sm-3">
+                    <label class="font-label">Postal Code</label>
+                    <input asp-for="PostalCode" class="form-control" placeholder="PostalCode" />
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    <label class="font-label">Travel History</label>
+                    <select asp-for="TravelHistory" class="form-control">
+                        <option value="No Recent Travel">No Recent Travel</option>
+                        <option value="Domestic Travel">Domestic Travel</option>
+                        <option value="International Travel">International Travel</option>
+                    </select>
+                </div>
+                <div class="col-sm-6">
+                    <label class="font-label">Vaccination Status</label>
+                    <select asp-for="VaccinationStatus" class="form-control">
+                        <option value="Fully Vaccinated">Fully Vaccinated</option>
+                        <option value="Partially Vaccinated">Partially Vaccinated</option>
+                        <option value="Not Vaccinated">Not Vaccinated</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check form-check-switchery qc-border mb-0">
+                    <label class="font-label">Have you taken covid test?</label>
+                    <p>
+                        <label class="form-check-label mr-3">
+                            <input name="haveyoutakencovidtest" asp-for="Haveyoutakencovidtest" type="radio" value="true" class="form-control-switchery mr-1">
+                            Yes
+                        </label>
+                        <label class="form-check-label">
+                            <input name="haveyoutakencovidtest" asp-for="Haveyoutakencovidtest" type="radio" value="false" class="form-control-switchery mr-1">
+                            No
+                        </label>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check form-check-switchery qc-border mb-0">
+                    <label class="font-label">
+                        Test Result
+                    </label>
+                    <p>
+                        <label class="form-check-label mr-3">
+                            <input name="testresult" asp-for="TestResult" type="radio" value="true" class="form-control-switchery mr-1">
+                            Positive
+                        </label>
+                        <label class="form-check-label">
+                            <input name="testresult" asp-for="TestResult" type="radio" value="false" class="form-control-switchery mr-1">
+                            Negative
+                        </label>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check form-check-switchery qc-border mb-0">
+                    <label class="font-label">
+                        Are you fully recovered?
+                    </label>
+                    <p>
+                        <label class="form-check-label mr-3">
+                            <input name="areyoufullyrecovered" asp-for="Areyoufullyrecovered" type="radio" value="true" class="form-control-switchery mr-1">
+                            Yes
+                        </label>
+                        <label class="form-check-label">
+                            <input name="areyoufullyrecovered" asp-for="Areyoufullyrecovered" type="radio" value="false" class="form-control-switchery mr-1">
+                            No
+                        </label>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check form-check-switchery qc-border mb-0">
+                    <label class="font-label">
+                        Have you contact with infected people?
+                    </label>
+                    <p>
+                        <label class="form-check-label mr-3">
+                            <input name="haveyoucontactinfppl" asp-for="Haveyoucontactinfppl" type="radio" value="true" class="form-control-switchery mr-1">
+                            Yes
+                        </label>
+                        <label class="form-check-label">
+                            <input name="haveyoucontactinfppl" asp-for="Haveyoucontactinfppl" type="radio" value="false" class="form-control-switchery mr-1">
+                            No
+                        </label>
+                    </p>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="form-check form-check-switchery mb-0">
+                    <label class="form-check-label" style="display:flex;">
+                        <input asp-for="Acknowlegetheinformation" type="checkbox" id="chkAcknowlege" class="form-check-input mr-2">
+                        <p>
+                            By completing this online form, I acknowledge and consent to the collection, use and disclosure of my personal data for security verification, access control and safety purposes.
+                        </p>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-12 ml-lg-auto text-center">
+
+                    @if (Model != null)
+                    {
+                        <button type="submit" id="formSubmit" class="btn-save" @((Model.Acknowlegetheinformation == false ? "disabled='disabled'" : ""))>Submit</button>
+                    }
+                    else
+                    {
+                        <button type="submit" id="formSubmit" class="btn-save" disabled='disabled'>Submit</button>
+                    }
+
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#chkAcknowlege').change(function () {
+            if ($("#chkAcknowlege").is(':checked')) {
+                $('#formSubmit').prop('disabled', false);
+            } else {
+                $('#formSubmit').prop('disabled', true);
+            }
+        });      
+    });
+</script>
+
